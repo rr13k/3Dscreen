@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8>
+    <title>3Dscreen</title>
+</head>
+<style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%
+        }
+        #info {
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            text-align: center;
+            z-index: 100;
+            color: red;
+            display: block;
+        }
+        .todayData {
+            position: absolute;
+            height: 200px;
+            width: 200px;
+            background-color: #183ba32b;
+            color: red;
+            right: 2px;
+            text-align: center;
+        }
+
+        .ADdata{
+            position: absolute;
+            height: 200px;
+            width: 200px;
+            background-color: #183ba32b;
+        }
+
+        .tools{
+            position: absolute;
+            right: 2px;
+            top: 200px;
+        }
+
+        #info {
+            position: absolute;
+            top: 350px;
+            width: 100%;
+            text-align: center;
+            z-index: 100;
+            display:block;
+        }
+</style>
+<body>
+    <div class="tools">
+        <div>
+            <span  style="vertical-align: super;">自动播放</span> <input type="checkbox" style="width:20px;height:20px;" onclick="autoAD(this)" >
+        </div>
+    </div>
+</body>
+</html>
+<script src="./js/three.min.js"></script>
+<script src="./js/OBJLoader.js"></script>
+<script src="./js/OrbitControls.js"></script>
+<script src="./js/GLTFLoader.js"></script>
+<script src="./js/main.js"></script>
+<script src="./js/TweenMax.min.js"></script>
+<script>
+
+    function autoAD(_this) {
+        ADAutoControl = _this.checked
+        if (_this.checked) {
+            var auto = setInterval(function () {
+                switchAD()
+                if (!ADAutoControl) {
+                    clearInterval(auto)
+                }
+            }, 3000)
+        }
+    }
+
+    function sittingRoom() {
+        var loader = new THREE.GLTFLoader();
+        loader.load( './assets/my.glb', function ( gltf ) {
+            gltf.scene.traverse( function ( child ) {
+                if ( child.isMesh ) {
+                    child.material.emissive =  child.material.color;
+                    child.material.emissiveMap = child.material.map ;
+                }
+                console.dir(child)
+                child.scale.x = 1.5
+                child.scale.y = 1.5
+                child.scale.z = 1.5
+                child.position.y = -10
+                child.position.z = 26
+            } );
+            scene.add( gltf.scene );
+        }, undefined, function ( error ) {
+            console.error( error );
+        } );
+    }
+    sittingRoom()
+</script>
